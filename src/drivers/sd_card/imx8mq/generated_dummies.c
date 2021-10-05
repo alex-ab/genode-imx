@@ -608,31 +608,7 @@ unsigned long dma_get_merge_boundary(struct device * dev)
 
 #include <linux/dma-mapping.h>
 
-dma_addr_t dma_map_page_attrs(struct device * dev,struct page * page,size_t offset,size_t size,enum dma_data_direction dir,unsigned long attrs)
-{
-	lx_emul_trace_and_stop(__func__);
-}
-
-
-#include <linux/dma-mapping.h>
-
 void dma_sync_sg_for_cpu(struct device * dev,struct scatterlist * sg,int nelems,enum dma_data_direction dir)
-{
-	lx_emul_trace_and_stop(__func__);
-}
-
-
-#include <linux/dma-mapping.h>
-
-void dma_sync_single_for_cpu(struct device * dev,dma_addr_t addr,size_t size,enum dma_data_direction dir)
-{
-	lx_emul_trace_and_stop(__func__);
-}
-
-
-#include <linux/dma-mapping.h>
-
-void dma_sync_single_for_device(struct device * dev,dma_addr_t addr,size_t size,enum dma_data_direction dir)
 {
 	lx_emul_trace_and_stop(__func__);
 }
@@ -979,14 +955,6 @@ void irq_work_tick(void)
 #include <linux/property.h>
 
 bool is_software_node(const struct fwnode_handle * fwnode)
-{
-	lx_emul_trace_and_stop(__func__);
-}
-
-
-#include <linux/mm.h>
-
-bool is_vmalloc_addr(const void * x)
 {
 	lx_emul_trace_and_stop(__func__);
 }
@@ -1756,14 +1724,6 @@ bool static_key_initialized;
 #include <linux/printk.h>
 
 int suppress_printk;
-
-
-#include <linux/swiotlb.h>
-
-unsigned int swiotlb_max_segment(void)
-{
-	lx_emul_trace_and_stop(__func__);
-}
 
 
 #include <linux/rcupdate.h>

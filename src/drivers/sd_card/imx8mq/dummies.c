@@ -387,6 +387,15 @@ void irq_pm_install_action(struct irq_desc * desc,struct irqaction * action)
 }
 
 
+#include <linux/mm.h>
+
+bool is_vmalloc_addr(const void * x)
+{
+	lx_emul_trace(__func__);
+	return 0;
+}
+
+
 #include <linux/kernfs.h>
 
 void kernfs_put(struct kernfs_node * kn)
@@ -677,6 +686,15 @@ void sysfs_remove_files(struct kobject * kobj,const struct attribute * const * p
 void sysfs_remove_link(struct kobject * kobj,const char * name)
 {
 	lx_emul_trace(__func__);
+}
+
+
+#include <linux/swiotlb.h>
+
+unsigned int swiotlb_max_segment(void)
+{
+	lx_emul_trace(__func__);
+	return 1;
 }
 
 

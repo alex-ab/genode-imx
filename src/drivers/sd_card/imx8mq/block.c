@@ -18,9 +18,69 @@
 #include <uapi/linux/hdreg.h>
 
 #include <genode_c_api/block.h>
+#include <lx_emul/alloc.h>
 #include <lx_emul/debug.h>
 #include <lx_user/init.h>
 #include <lx_user/io.h>
+
+
+#include <linux/dma-mapping.h>
+
+dma_addr_t dma_map_page_attrs(struct device * dev,
+                              struct page * page,
+                              size_t offset,
+                              size_t size,
+                              enum dma_data_direction dir,
+                              unsigned long attrs)
+{
+	dma_addr_t    const dma_addr  = page_to_phys(page);
+	unsigned long const virt_addr = (unsigned long)page_to_virt(page);
+
+	lx_emul_mem_cache_clean_invalidate((void *)(virt_addr + offset), size);
+	return dma_addr + offset;
+}
+
+#if 0
+void dma_unmap_page_attrs(struct device * dev,
+                          dma_addr_t addr,
+                          size_t size,
+                          enum dma_data_direction dir,
+                          unsigned long attrs)
+{
+	unsigned long const virt_addr = lx_emul_mem_virt_addr((void*)addr);
+
+	if (!virt_addr)
+		return;
+
+	if (dir == DMA_FROM_DEVICE)
+		lx_emul_mem_cache_invalidate((void *)virt_addr, size);
+}
+#endif
+
+
+void dma_sync_single_for_device(struct device * dev,
+                                dma_addr_t addr,
+                                size_t size,
+                                enum dma_data_direction dir)
+{
+	unsigned long virt_addr = lx_emul_mem_virt_addr((void *)addr);
+	lx_emul_mem_cache_clean_invalidate((void *)(virt_addr), size);
+}
+
+
+void dma_sync_single_for_cpu(struct device * dev,
+                             dma_addr_t addr,
+                             size_t size,
+                             enum dma_data_direction dir)
+{
+	unsigned long const virt_addr = lx_emul_mem_virt_addr((void*)addr);
+
+	if (!virt_addr)
+		return;
+
+	if (dir == DMA_FROM_DEVICE)
+		lx_emul_mem_cache_invalidate((void *)virt_addr, size);
+}
 
 
 static int __init genhd_device_init(void)
