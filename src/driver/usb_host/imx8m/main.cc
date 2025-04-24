@@ -26,6 +26,7 @@
 
 using namespace Genode;
 
+extern "C" bool debug_special_execute_enable;
 
 struct Main
 {
@@ -46,6 +47,8 @@ struct Main
 	Main(Env & env) : env(env)
 	{
 		Lx_kit::initialize(env, signal_handler);
+
+		debug_special_execute_enable = true;
 
 		Genode_c_api::initialize_usb_service(env, signal_handler,
 		                                     lx_emul_shared_dma_buffer_allocate,
